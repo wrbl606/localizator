@@ -2,12 +2,14 @@
 
 <html>
     <head>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <meta charset="utf-8"/>
+        <link href="css/materialize.min.css" rel="stylesheet">
         <link href="css/font-awesome.min.css" rel="stylesheet">
-        <script src="http://code.jquery.com/jquery-latest.min.js"
+        <link href="css/style.css" rel="stylesheet">
+        <script src="jquery-3.0.0.min.js"
         type="text/javascript"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+        <script src="smooth-scroll.js"
+        type="text/javascript"></script>
         <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDpJnROqRSjHR-cbJtDokfQIllmTLszfPU"></script>
         <script>
 
@@ -19,6 +21,12 @@
                 mapTypeId:google.maps.MapTypeId.ROADMAP
             };
             map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+            createCarInfoPanel(1, "Mercedes Sprinter", 345, "Samochód dostawczy", 24);
+            createCarInfoPanel(2, "MAN TGX", 1420, "Ciągnik z naczepą", 33);
+            createCarInfoPanel(3, "Iveco x188", 580, "Samochód ciężarowy", 48);
+            createCarInfoPanel(4, "Mercedes Sprinter", 345, "Samochód dostawczy", 24);
+            createCarInfoPanel(5, "MAN TGX", 1420, "Ciągnik z naczepą", 33);
+            createCarInfoPanel(3, "Iveco x188", 580, "Samochód ciężarowy", 48);
         }
 
         //TODO create markers
@@ -59,6 +67,133 @@
             console.log(id);
         }
 
+        function createCarInfoPanel(id, name, capacity, gauge, distance) {
+            var col = document.createElement("div");
+
+            col.setAttribute("class", "col s12 m6 l4");
+
+            
+            var card = document.createElement("div");
+            card.setAttribute("class", "card blue-grey darken-1");
+            
+            var cardContent = document.createElement("div");
+            cardContent.setAttribute("class", "card-content white-text");
+            
+            var cardTitle = document.createElement("span");
+            cardTitle.setAttribute("class", "card-title");
+            cardTitle.innerHTML = name;
+            
+            cardTitle.innerHTML += convertCapacityToImage(capacity);
+//////////////////////////////////////////////////////////////////////////////////
+            var capacityCollection = document.createElement("ul");
+            capacityCollection.setAttribute("class", "collection");
+            
+            var capacityInfoItem = document.createElement("li");
+            capacityInfoItem.setAttribute("class", "collection-item avatar blue-grey darken-1");
+
+            var capacityImage = document.createElement("img");
+            capacityImage.setAttribute("class", "circle");
+            capacityImage.setAttribute("src", "images/capacity.png");
+         
+            var capacityTitle = document.createElement("span");
+            capacityTitle.setAttribute("class", "title");
+            capacityTitle.innerHTML = "Ładowność";
+
+            var capacityText = document.createElement("p");
+            capacityText.innerHTML = capacity + " kg";
+
+            //make capacity tree
+            
+            capacityInfoItem.appendChild(capacityImage);
+            capacityInfoItem.appendChild(capacityTitle);
+            capacityInfoItem.appendChild(capacityText);
+            capacityCollection.appendChild(capacityInfoItem);
+
+//////////////////////////////////////////////////////////////////////////////////
+            var gaugeCollection = document.createElement("ul");
+            gaugeCollection.setAttribute("class", "collection");
+            
+            var gaugeInfoItem = document.createElement("li");
+            gaugeInfoItem.setAttribute("class", "collection-item avatar blue-grey darken-1");
+            
+            var gaugeImage = document.createElement("img");
+            gaugeImage.setAttribute("class", "circle");
+            gaugeImage.setAttribute("src", "images/gauge.png");
+         
+            var gaugeTitle = document.createElement("span");
+            gaugeTitle.setAttribute("class", "title");
+            gaugeTitle.innerHTML = "Gabaryt";
+
+            var gaugeText = document.createElement("p");
+            gaugeText.innerHTML = gauge;
+            //make gauge tree
+            
+            gaugeInfoItem.appendChild(gaugeImage);
+            gaugeInfoItem.appendChild(gaugeTitle);
+            gaugeInfoItem.appendChild(gaugeText);
+            gaugeCollection.appendChild(gaugeInfoItem);
+//////////////////////////////////////////////////////////////////////////////////
+            var distanceCollection = document.createElement("ul");
+            distanceCollection.setAttribute("class", "collection");
+            
+            var distanceInfoItem = document.createElement("li");
+            distanceInfoItem.setAttribute("class", "collection-item avatar blue-grey darken-1");
+            
+            var distanceImage = document.createElement("img");
+            distanceImage.setAttribute("class", "circle");
+            distanceImage.setAttribute("src", "images/distance.png");
+         
+            var distanceTitle = document.createElement("span");
+            distanceTitle.setAttribute("class", "title");
+            distanceTitle.innerHTML = "Odległość";
+
+            var distanceText = document.createElement("p");
+            distanceText.innerHTML = distance + " km";
+
+            //make distance tree
+            distanceInfoItem.appendChild(distanceImage);
+            distanceInfoItem.appendChild(distanceTitle);
+            distanceInfoItem.appendChild(distanceText);
+            distanceCollection.appendChild(distanceInfoItem);
+
+            var cardAction = document.createElement("div");
+            cardAction.setAttribute("class", "card-action");
+
+            var showLocationButton = document.createElement("a");
+            showLocationButton.innerHTML = "Pokaż lokalizację";
+            showLocationButton.setAttribute("onclick", 'setMarkerFor(' + id + ')');
+            showLocationButton.setAttribute("href", "#googleMap");
+            showLocationButton.setAttribute("data-scroll", "");
+
+            cardAction.appendChild(showLocationButton);
+
+            cardContent.appendChild(cardTitle);
+            cardContent.appendChild(capacityCollection);
+            cardContent.appendChild(gaugeCollection);
+            cardContent.appendChild(distanceCollection);
+            cardContent.appendChild(cardAction);
+
+            card.appendChild(cardContent);
+            col.appendChild(card);
+
+            document.getElementById("mainContainer").insertBefore(
+                col, document.getElementById("mainContainer").firstChild);
+        }
+
+
+        function convertCapacityToImage(capacity) {
+            if(capacity < 500) {
+                return "<img class='vehicle-type-image' src='images/car.png'/>";
+            } else if(capacity > 500 && capacity < 1000) {
+                return "<img class='vehicle-type-image' src='images/truck1.png'/>";
+            } else if(capacity > 1000) {
+                return "<img class='vehicle-type-image' src='images/truck2.png'/>";
+            }
+
+            return "";
+        }
+
+
         google.maps.event.addDomListener(window, 'load', initialize);
 
 
@@ -67,164 +202,41 @@
         </script>
 
         <style>
-            .vehicle-type-image {
-                position: relative;
-                height: 1.1em;
-                margin-left: 0.3em;
-                top: 6px;
-                display: inline-block;
-            }
-
-            .collection {
-                border: 0px!important;
-                height: 4.2em;
-                margin-bottom: 0px;
-                margin-top: 0px; 
-            }
-
-            #googleMap {
-                width: 100%;
-                height: 51.2vh;
-                -webkit-box-shadow: 0px 1px 6px 0px rgba(0,0,0,0.75);
-                -moz-box-shadow: 0px 1px 6px 0px rgba(0,0,0,0.75);
-                box-shadow: 0px 1px 6px 0px rgba(0,0,0,0.75);
-            }
+            
         </style>
 
     </head>
 
     <body>
+
+            <nav>
+                <div class="nav-wrapper amber">
+                <a href="#" class="brand-logo">Localizator</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="car_configurator.html"><img class="menu-image" src="images/add.png"/>Dodaj pojazd</a></li>
+                    <li><a href="index.html"><img class="menu-image" src="images/control.png"/>Zarządaj</a></li>
+                </ul>
+                </div>
+            </nav>
         
         <div class="container">
 
-            <!-- TODO HEADER -->
+            
 
-            <div class="row">
-                <div class="col s12 m6 l4">
-                    <div class="card blue-grey darken-1">
+            <div id="mainContainer" class="row">
 
-                        <div class="card-content white-text">
-                        <span class="card-title">Renault Kangoo<img class="vehicle-type-image" src="images/car.png"/></span>
-                        <ul class="collection">
-                            
-                            <li class="collection-item avatar blue-grey darken-1">
-                                <img class="circle" src="images/capacity.png"/>
 
-                                <span class="title">Ładowność</span>
-                                <p>156 / 300 kg</p>
-                            </li>
-                        </ul>   
-                        <ul class="collection">
-                            
-                            <li class="collection-item avatar blue-grey darken-1">
-                                <img class="circle" src="images/gauge.png"/>
+            
 
-                                <span class="title">Gabaryt</span>
-                                <p>Samochód dostawczy</p>
-                            </li>
-                        </ul>   
-                        <ul class="collection">
-                            
-                            <li class="collection-item avatar blue-grey darken-1">
-                                <img class="circle" src="images/distance.png"/>
-
-                                <span class="title">Odległość</span>
-                                <p>34km (48 minut)</p>
-                            </li>
-                        </ul>   
-                        
-                        
-                        <div class="card-action">
-                        <a href="#" onclick="setMarkerFor(1);">Pokaż lokalizację</a>
-                        </div>
-                    </div>
-                </div>
-                </div>
-                <div class="col s12 m6 l4">
-                    <div class="card blue-grey darken-1">
-
-                        <div class="card-content white-text">
-                        <span class="card-title">MAN TGX<img class="vehicle-type-image" src="images/truck2.png"/></span>
-                        <ul class="collection">
-                            
-                            <li class="collection-item avatar blue-grey darken-1">
-                                <img class="circle" src="images/capacity.png"/>
-
-                                <span class="title">Ładowność</span>
-                                <p>1433 / 2200 kg</p>
-                            </li>
-                        </ul>   
-                        <ul class="collection">
-                            
-                            <li class="collection-item avatar blue-grey darken-1">
-                                <img class="circle" src="images/gauge.png"/>
-
-                                <span class="title">Gabaryt</span>
-                                <p>Ciągnik siodłowy z naczepą</p>
-                            </li>
-                        </ul>   
-                        <ul class="collection">
-                            
-                            <li class="collection-item avatar blue-grey darken-1">
-                                <img class="circle" src="images/distance.png"/>
-
-                                <span class="title">Odległość</span>
-                                <p>14km (20 minut)</p>
-                            </li>
-                        </ul>   
-                        
-                        
-                        <div class="card-action">
-                        <a href="#" onclick="setMarkerFor(2);">Pokaż lokalizację</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col s12 m6 l4">
-                    <div class="card blue-grey darken-1">
-
-                        <div class="card-content white-text">
-                        <span class="card-title">Mercedes Sprinter<img class="vehicle-type-image" src="images/truck1.png"/></span>
-                        <ul class="collection">
-                            
-                            <li class="collection-item avatar blue-grey darken-1">
-                                <img class="circle" src="images/capacity.png"/>
-
-                                <span class="title">Ładowność</span>
-                                <p>623 / 1000 kg</p>
-                            </li>
-                        </ul>   
-                        <ul class="collection">
-                            
-                            <li class="collection-item avatar blue-grey darken-1">
-                                <img class="circle" src="images/gauge.png"/>
-
-                                <span class="title">Gabaryt</span>
-                                <p>Ciężarówka</p>
-                            </li>
-                        </ul>   
-                        <ul class="collection">
-                            
-                            <li class="collection-item avatar blue-grey darken-1">
-                                <img class="circle" src="images/distance.png"/>
-
-                                <span class="title">Odległość</span>
-                                <p>55km (1 godzina)</p>
-                            </li>
-                        </ul>   
-                        
-                        
-                        <div class="card-action">
-                        <a href="#" onclick="setMarkerFor(3);">Pokaż lokalizację</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="googleMap" style="width:100%;height:45vh;"></div>
+            <div id="googleMap" class="z-depth-1"></div>
 
         </div>
+
+
+        <script>
+            smoothScroll.init();
+
+        </script>
 
     </body>
 </html>

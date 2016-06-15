@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <link href="css/materialize.min.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+
+        <link href="css/style.css" rel="stylesheet">
+        <script src="jquery-3.0.0.min.js"
+        type="text/javascript"></script>
+        <script src="smooth-scroll.js"
+        type="text/javascript"></script>
+    </head>
+    <body>
+
+        <nav>   
+            <div class="nav-wrapper amber">
+            <a href="#" class="brand-logo">Localizator</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="car_configurator.html"><img class="menu-image" src="images/add.png"/>Dodaj pojazd</a></li>
+                <li><a href="index.html"><img class="menu-image" src="images/control.png"/>Zarządaj</a></li>
+            </ul>
+            </div>
+        </nav>
+
+        <div class="container">
+            <h1>Dodaj pojazd</h1>
+            <div class="row">
+                <form class="col s12">
+                    <div class="row">
+                        <div class="input-field col s8">
+                            <input placeholder="Nazwa pojazdu" id="car_name" type="text" class="validate">
+                        </div>
+                        <div class="input-field col s4">
+                        <input placeholder="Pojemność maksymalna (kg)" id="max_capacity" type="number" class="validate">
+                        </div>
+                    </div>
+
+                    <button class="btn waves-effect waves-light right" type="submit" name="action">
+                        <img class="small-icon" src="images/add.png"/>
+                        Dodaj
+                        
+                    </button>
+                    </form>
+            </div>
+        </div>
+        </script>
+
+    </body>
+</html>
